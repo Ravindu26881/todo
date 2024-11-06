@@ -12,20 +12,25 @@
       <ul class="list-group">
         <div v-for="task in taskList" :key="task.id">
           <div class="dashboard__item-list__item" >
-            {{ task.title }}
-            <div class="dashboard__item-list__item-actions">
-              <div class="task_checkbox">
-                <input
-                    type="checkbox"
-                    class="btn-check"
-                    :id="task.id"
-                    v-model="task.completed"
-                    @click="triggerCheck(task.id)"
-                />
-                <label class="btn btn-light" v-if="!task.completed" :for="task.id">Complete</label>
-                <label class="btn btn-success" v-else-if="task.completed" :for="task.id">Completed</label>
+            <div class="task_checkbox">
+              <input
+                  type="checkbox"
+                  class="btn-check"
+                  :id="task.id"
+                  v-model="task.completed"
+                  @click="triggerCheck(task.id)"
+              />
+              <!--                <img class="task_checkbox-icon-complete" v-if="!task.completed" :for="task.id" src="https://img.icons8.com/?size=100&id=11658&format=png&color=40C057" />-->
+              <!--                <img class="task_checkbox-icon-completed" v-else-if="task.completed" :for="task.id" src="https://img.icons8.com/?size=100&id=11208&format=png&color=40C057" />-->
+              <label class="icon-complete" v-if="!task.completed" :for="task.id" ></label>
+              <label class="icon-completed"  v-else-if="task.completed" :for="task.id"  ></label>
+              <div class="dashboard__item-list__item__title">
+                {{ task.title }}
               </div>
-              <button class="btn btn-danger" @click="deleteTask(task.id)">Delete</button>
+            </div>
+
+            <div class="dashboard__item-list__item-actions">
+              <img class="icon-delete" src="https://img.icons8.com/?size=192&id=83149&format=png&color=FA5252" @click="deleteTask(task.id)">
             </div>
           </div>
         </div>
@@ -80,6 +85,9 @@ h3 {
 ul {
   list-style-type: none;
   padding: 0;
+  height: calc(100vh - 60px);
+  overflow: scroll;
+  padding-bottom: 82px;
 }
 li {
   display: inline-block;
@@ -93,9 +101,40 @@ a {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
+  padding: 10px 20px;
+  background: #f7f6f6;
+  border-radius: 40px;
+  margin: 10px 20px;
 }
 .dashboard__item-list__item-actions {
   display: flex;
   gap: 6px;
+}
+.task_checkbox {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.icon-complete {
+  background-image: url(https://img.icons8.com/?size=100&id=11658&format=png&color=40C057);
+  height: 20px;
+  width: 20px;
+  background-size: cover;
+  background-color: transparent;
+  filter: grayscale(1);
+}
+
+.icon-completed {
+  background-image: url(https://img.icons8.com/?size=100&id=11208&format=png&color=40C057);
+  height: 20px;
+  width: 20px;
+  background-size: cover;
+  background-color: transparent;
+}
+
+.icon-delete {
+  height: 20px;
+  width: 20px;
 }
 </style>
