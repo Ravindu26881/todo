@@ -2,7 +2,21 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-    tasks: []
+    tasks: [{
+      id: Math.floor(10000 + Math.random() * 90000),
+      title: "You can add tasks by clicking the + icon in the bottom right corner.",
+      completed: false
+    },
+      {
+        id: Math.floor(10000 + Math.random() * 90000),
+        title: "Delete tasks by clicking the X icon.",
+        completed: false
+      },
+      {
+        id: Math.floor(10000 + Math.random() * 90000),
+        title: "Mark completed tasks by clicking the ✓ icon",
+        completed: true
+      }]
   },
   getters: {
     getTaskByTitle: (state) => (searchString) => {

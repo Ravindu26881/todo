@@ -100,13 +100,13 @@ a {
 }
 .dashboard__item-list__item {
   display: flex;
-  flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
-  padding: 10px 13px;
+  padding: 10px 20px;
   background: #f7f6f6;
   border-radius: 40px;
   margin: 10px 20px;
+  text-align: left;
 }
 .dashboard__item-list__item-actions {
   display: flex;
@@ -123,6 +123,7 @@ a {
   background-image: url(https://img.icons8.com/?size=100&id=11208&format=png&color=40C057);
   height: 20px;
   width: 20px;
+  min-width: 20px;
   background-size: cover;
   background-color: transparent;
   filter: grayscale(1);
@@ -137,5 +138,6 @@ a {
 .icon-delete {
   height: 20px;
   width: 20px;
+  min-width: 20px;
 }
 </style>
