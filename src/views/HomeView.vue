@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" style="    font-family: 'Poppins';">
     <dashboard />
   </div>
 </template>

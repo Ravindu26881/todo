@@ -3,7 +3,9 @@
     <div class="container-fluid">
       <a class="navbar-brand">Chores</a>
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchText">
+        <input class="form-control me-2" style="height: 40px;
+    border-radius: 32px;
+    padding: 12px;" type="search" placeholder="Search" aria-label="Search" v-model="searchText">
       </form>
     </div>
   </nav>
@@ -22,8 +24,8 @@
               />
               <!--                <img class="task_checkbox-icon-complete" v-if="!task.completed" :for="task.id" src="https://img.icons8.com/?size=100&id=11658&format=png&color=40C057" />-->
               <!--                <img class="task_checkbox-icon-completed" v-else-if="task.completed" :for="task.id" src="https://img.icons8.com/?size=100&id=11208&format=png&color=40C057" />-->
-              <label class="icon-complete" v-if="!task.completed" :for="task.id" ></label>
-              <label class="icon-completed"  v-else-if="task.completed" :for="task.id"  ></label>
+
+              <label class="icon-completed-disabled"  :class="{ 'icon-completed-enabled': task.completed }" :for="task.id"></label>
               <div class="dashboard__item-list__item__title">
                 {{ task.title }}
               </div>
@@ -116,21 +118,19 @@ a {
   align-items: center;
 }
 
-.icon-complete {
-  background-image: url(https://img.icons8.com/?size=100&id=11658&format=png&color=40C057);
-  height: 20px;
-  width: 20px;
-  background-size: cover;
-  background-color: transparent;
-  filter: grayscale(1);
-}
-
-.icon-completed {
+.icon-completed-disabled {
   background-image: url(https://img.icons8.com/?size=100&id=11208&format=png&color=40C057);
   height: 20px;
   width: 20px;
   background-size: cover;
   background-color: transparent;
+  filter: grayscale(1);
+  transition: 0.5s;
+}
+
+.icon-completed-enabled {
+  filter: none;
+  transition: 0.5s;
 }
 
 .icon-delete {
