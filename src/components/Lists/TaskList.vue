@@ -103,7 +103,7 @@ a {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 10px 13px;
   background: #f7f6f6;
   border-radius: 40px;
   margin: 10px 20px;
