@@ -3,16 +3,17 @@
     <div class="container-fluid">
       <a class="navbar-brand">Chores</a>
       <form class="d-flex" role="search">
-        <input class="form-control me-2" style="height: 40px;
+        <input class="form-control" style="height: 40px;
     border-radius: 32px;
-    padding: 12px;" type="search" placeholder="Search" aria-label="Search" v-model="searchText">
+    padding: 12px;
+text-align: center;" type="search" placeholder="Search" aria-label="Search" v-model="searchText">
       </form>
     </div>
   </nav>
 
     <div class="dashboard__item-list">
       <ul class="list-group">
-        <div v-for="task in taskList" :key="task.id">
+        <div class="dashboard__item-list__task" v-for="task in taskList" :key="task.id">
           <div class="dashboard__item-list__item" >
             <div class="task_checkbox">
               <input
@@ -98,6 +99,10 @@ li {
 a {
   color: #42b983;
 }
+
+.navbar {
+  padding: 20px 8px;
+}
 .dashboard__item-list__item {
   display: flex;
   flex-direction: row;
@@ -117,6 +122,10 @@ a {
   display: flex;
   gap: 14px;
   align-items: center;
+}
+
+.dashboard__item-list__task:first-child {
+  margin-top: 20px;
 }
 
 .icon-completed-disabled {
