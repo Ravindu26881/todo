@@ -111,6 +111,7 @@ a {
 .dashboard__item-list__item-actions {
   display: flex;
   gap: 6px;
+  align-items: center;
 }
 .task_checkbox {
   display: flex;
