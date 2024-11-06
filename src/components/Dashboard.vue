@@ -78,6 +78,7 @@ a {
   width: 50px;
   cursor: pointer;
   transition: 0.5s;
+  filter: invert(1);
 }
 
 .dashboard_button-floating-add__clicked {
@@ -94,7 +95,7 @@ a {
   position: absolute;
   bottom: -70px;
   transition: 0.5s;
-  padding-right: 68px;
+  padding-right: 74px;
 }
 
 .form-control {
@@ -102,6 +103,13 @@ a {
   border-radius: 32px;
   padding: 12px;
   margin-right: 10px;
+  background: rgb(41, 40, 40);
+  border: 1px solid rgb(165, 165, 165);
+  color: white;
+  text-align: center;
+}
+.form-control::placeholder {
+  color: #a5a5a5;
 }
 .form-control:focus {
   border: 2px solid;
@@ -121,6 +129,7 @@ a {
   width: 0px;
   height: 50px;
   transition: 0.2s;
+  filter: invert(1);
 }
 
 .dashboard_button-add__open {
