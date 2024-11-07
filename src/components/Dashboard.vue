@@ -3,7 +3,7 @@
     <task-list ref="taskList" />
     <div>
     <div class="dashboard_input-floating-add-more__hidden">
-      <textarea class="form-control" aria-label="With textarea" placeholder="Add a new task"  v-on:keyup.enter="addTask" v-model="newTaskTitle"></textarea>
+      <textarea class="form-control" aria-label="With textarea" placeholder="Add a new task"  v-on:keyup.enter="addTask" v-model="newTaskTitle" maxlength="65"></textarea>
       <img class="dashboard_button-add__hidden"  @click="addTask" src="https://img.icons8.com/?size=100&id=11208&format=png">
     </div>
       <img class="dashboard_button-floating-add__default " src="https://img.icons8.com/?size=100&id=37839&format=png"

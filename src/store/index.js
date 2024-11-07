@@ -19,7 +19,7 @@ export default createStore({
       },
       {
         id: Math.floor(10000 + Math.random() * 90000),
-        title: "Move up high priority tasks by dragging the task to the top of the list.",
+        title: "Move up high priority tasks by clicking the edit icon on top right.",
         completed: false
       }
     ]
