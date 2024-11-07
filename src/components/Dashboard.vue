@@ -1,9 +1,9 @@
 <template>
   <div class="dashboard">
-    <task-list ref="taskList" />
+    <task-list class="aaaaaaaaaa" ref="taskList" :blur="addIconClicked" />
     <div>
     <div class="dashboard_input-floating-add-more__hidden">
-      <textarea class="form-control" aria-label="With textarea" placeholder="Add a new task"  v-on:keyup.enter="addTask" v-model="newTaskTitle" maxlength="65"></textarea>
+      <textarea class="form-control" aria-label="With textarea" placeholder="Add a new task" v-model="newTaskTitle" maxlength="65"></textarea>
       <img class="dashboard_button-add__hidden"  @click="addTask" src="https://img.icons8.com/?size=100&id=11208&format=png">
     </div>
       <img class="dashboard_button-floating-add__default " src="https://img.icons8.com/?size=100&id=37839&format=png"
@@ -71,6 +71,7 @@ li {
 a {
   color: #42b983;
 }
+
 .dashboard_button-floating-add__default {
   position: absolute;
   bottom: 24px;
@@ -125,8 +126,8 @@ a {
 }
 
 .dashboard_button-add__hidden {
-  opacity: 0;
-  width: 0px;
+  opacity: 0.5;
+  filter: blur(1px);
   height: 50px;
   transition: 0.2s;
   filter: invert(1);

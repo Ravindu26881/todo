@@ -1,26 +1,44 @@
 <template>
-  <nav class="navbar bg-body-tertiary">
+  <nav class="navbar bg-body-tertiary" >
     <div class="container-fluid">
-      <a class="navbar-brand">Chores</a>
-      <form class="d-flex" role="search">
-        <input class="form-control" style="height: 40px; border-radius: 32px; padding: 12px; text-align: center; background: rgb(41 40 40); border: 1px solid #a5a5a5; color: white;" type="search" placeholder="Search" aria-label="Search" v-model="searchText">
-      </form>
+      <a class="navbar-brand" :class="{'navbar-brand_hidden ': searchMode }">Chores</a>
     </div>
   </nav>
-  <div class="dashboard__item-list__edit">
-    <div class="list-edit_text" :class="{'list-edit_text-hide ': editMode }">{{ todayText }}</div>
+
+
+
+  <div class="search">
+    <img class="icon-search-hidden" @click="toggleSearchMode" :class="{'icon-search-open': !searchMode && !editMode, 'blur disabled opacity-20': blur}"
+         src="https://img.icons8.com/?size=100&id=112468&format=png"/>
+
+    <div class="search-hidden"  :class="{'search-open': searchMode }">
+      <input
+             class="form-control input_search " type="search"
+             placeholder="Search" aria-label="Search"
+             v-model="searchText"/>
+      <img class="icon-search-button" @click="findTaskByTitle(searchText)"
+           src="https://img.icons8.com/?size=100&id=112468&format=png"
+           :class="{ 'blur disabled opacity-20': searchText.length < 1}"/>
+      <img class="icon-arrow-up" @click="toggleSearchMode" src="https://img.icons8.com/?size=100&id=7801&format=png">
+    </div>
+
+  </div>
+
+
+  <div class="dashboard__item-list__edit" style="transition: 0.5s;" :class="{'opacity-20 disabled': blur }">
     <div class="list-edit_text" :class="{'list-edit_text-hide ': !editMode }">Drag and drop to change order</div>
     <img class="icon-edit" src="https://img.icons8.com/?size=144&id=MsQIVqWh2kj2&format=png"
-         :class="{'icon-edit-hide ': editMode }"
+         :class="{'icon-edit-hide ': editMode || searchMode }"
         @click="editMode = !editMode"/>
     <img class="icon-edit" src="https://img.icons8.com/?size=100&id=59875&format=png"
          :class="{'icon-edit-hide ': !editMode }"
           @click="editMode = !editMode"/>
   </div>
 
-  <div class="dashboard__item-list">
+  <div v-if="taskList.length < 1 && searchText.length > 1" style="color: white; padding: 100px">No results</div>
+  <div class="dashboard__item-list"  :class="{'blur disabled opacity-20': blur }">
     <ul class="list-group" ref="sortableList">
-      <li  v-for="task in taskList" :key="task.id" class="dashboard__item-list__item dashboard__item-list__task" :class="{'dashboard__item-list__item__edit': editMode, 'dashboard__item-list__item-completed' : task.completed }">
+      <li  v-for="task in taskList" :key="task.id" class="dashboard__item-list__item dashboard__item-list__task" :class="{'dashboard__item-list__item__edit ': editMode, 'dashboard__item-list__item-completed' : task.completed }">
         <div class="task_checkbox">
           <input
               type="checkbox"
@@ -29,14 +47,14 @@
               v-model="task.completed"
               @click="triggerCheck(task.id)"
           />
-          <label class="icon-completed-disabled" :class="{ 'icon-completed-enabled': task.completed, 'opacity-20': editMode }" :for="task.id"></label>
+          <label class="icon-completed-disabled" :class="{ 'icon-completed-enabled': task.completed, 'opacity-20 disabled': editMode }" :for="task.id"></label>
           <div class="dashboard__item-list__item__title" style="padding: 0px 14px 0px 0px;">
             {{ task.title }}
           </div>
         </div>
 
         <div class="dashboard__item-list__item-actions" >
-          <img class="icon-delete" :class="{'opacity-20': editMode }" src="https://img.icons8.com/?size=192&id=83149&format=png&color=FA5252" @click="deleteTask(task.id)">
+          <img class="icon-delete" :class="{'opacity-20 disabled': editMode }" src="https://img.icons8.com/?size=192&id=83149&format=png&color=FA5252" @click="deleteTask(task.id)">
         </div>
       </li>
     </ul>
@@ -54,20 +72,25 @@ export default {
       searchText: '',
       editMode: false,
       sortable: null,
-      todayText:''
+      searchMode: false
+    }
+  },
+  props: {
+    blur: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
     this.loadTasks();
     this.initSortable();
-    this.setDate()
   },
   watch: {
-    searchText: function(newVal) {
-      this.findTaskByTitle(newVal);
-    },
     editMode: function() {
       this.initSortable();
+    },
+    searchMode: function() {
+      this.searchText = '';
     }
   },
   methods: {
@@ -105,42 +128,34 @@ export default {
         }
       }
     },
-    setDate() {
-      const today = new Date();
-
-      const day = today.getDate();
-      const month = today.toLocaleString('default', { month: 'long' });
-      const year = today.getFullYear();
-
-      // Function to get the ordinal suffix (st, nd, rd, th)
-      function getOrdinalSuffix(day) {
-        if (day > 3 && day < 21) return 'th'; // Covers 11-13
-        switch (day % 10) {
-          case 1: return 'st';
-          case 2: return 'nd';
-          case 3: return 'rd';
-          default: return 'th';
-        }
-      }
-
-      const ordinalSuffix = getOrdinalSuffix(day);
-      this.todayText = `Today is ${day}${ordinalSuffix} of ${month}, ${year}`;
+    toggleSearchMode () {
+      this.searchMode = !this.searchMode;
+      this.searchText = ''
+      this.loadTasks();
     }
   }
 }
 </script>
 
 <style scoped>
+
+.disabled {
+  pointer-events:none;
+}
+
 h3 {
   margin: 40px 0 0;
+}
+.blur {
+  filter: blur(1px);
 }
 ul {
   list-style-type: none;
   padding: 0;
   height: calc(100vh - 60px);
   overflow: scroll;
-  padding-bottom: 82px;
-  margin-top: 70px;
+  padding-bottom: 200px;
+  padding-top: 20px;
 }
 li {
   display: inline-block;
@@ -153,7 +168,16 @@ a {
 .navbar {
   padding: 20px 8px;
   background-color: rgb(57 57 57) !important;
-  z-index: 1;
+  z-index:0;
+}
+.navbar-brand {
+  position: relative;
+  transition: 0.5s;
+  left: 0;
+}
+.navbar-brand_hidden {
+  left: -110px;
+  transition: 0.5s;
 }
 .dashboard__item-list__item {
   display: flex;
@@ -178,6 +202,7 @@ a {
   border: 1px solid;
   transition: 0.5s;
   color: #cfffe5;
+  transition: 0.5s;
 }
 
 
@@ -191,6 +216,36 @@ a {
   gap: 14px;
   align-items: center;
 }
+
+.input_search {
+  transition: 0.5s;
+  height: 40px;
+  border-radius: 32px;
+  padding: 12px;
+  text-align: center;
+  background: rgb(41 40 40);
+  border: 1px solid #a5a5a5;
+  color: white;
+
+}
+
+.search-hidden {
+  position: absolute;
+  top: -100px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  gap: 10px;
+  transition: 0.5s;
+}
+
+.search-open {
+  top: 0px;
+  transition: 0.5s;
+}
+
+
 
 .form-control::placeholder {
   color: #a5a5a5;
@@ -223,19 +278,6 @@ a {
   transition: 0.5s;
 }
 
-.icon-drag_hidden {
-  width: 0px;
-  height: 0px;
-  position: absolute;
-  transition: 0.5s;
-}
-
-.icon-drag_open {
-  position: unset;
-  width: 20px;
-  height: 20px;
-  transition: 0.5s;
-}
 
 .icon-edit {
   filter: invert(1);
@@ -244,7 +286,7 @@ a {
   position: absolute;
   right: 20px;
   margin-top: 20px;
-  top: 80px;
+  top: 4px;
   transition: 0.5s;
 }
 
@@ -255,20 +297,50 @@ a {
 
 .list-edit_text {
   position: absolute;
-  left: 20px;
-  top: 107px;
+  right: 67px;
+  top: 30px;
   color: white;
   transition: 0.5s;
   font-size: 13px;
 }
 
 .icon-edit-hide {
-  top: 32px;
+  top: -100px;
   transition: 0.5s;
 }
 
 .list-edit_text-hide {
-  top: 32px;
+  top: -100px;
   transition: 0.5s;
 }
+
+.icon-search-hidden {
+  filter: invert(1);
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 60px;
+  margin-top: 20px;
+  top: -100px;
+  transition: 0.5s;
+}
+
+.icon-search-open {
+  top:4px;
+}
+
+.icon-search-button {
+  filter: invert(1);
+  width: 30px;
+  height: 30px;
+  transition: 0.5s;
+}
+
+.icon-arrow-up {
+  filter: invert(1);
+  width: 30px;
+  height: 30px;
+  transition: 0.5s;
+}
+
 </style>
