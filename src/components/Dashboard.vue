@@ -3,7 +3,7 @@
     <task-list class="aaaaaaaaaa" ref="taskList" :blur="addIconClicked" />
     <div>
     <div class="dashboard_input-floating-add-more__hidden">
-      <textarea class="form-control" aria-label="With textarea" placeholder="Add a new task" v-model="newTaskTitle" maxlength="65"></textarea>
+      <textarea class="form-control" aria-label="With textarea" placeholder="Add a new task" @input="setSubmitButtonState" v-model="newTaskTitle" maxlength="65"></textarea>
       <img class="dashboard_button-add__hidden"  @click="addTask" src="https://img.icons8.com/?size=100&id=11208&format=png">
     </div>
       <img class="dashboard_button-floating-add__default " src="https://img.icons8.com/?size=100&id=37839&format=png"
@@ -35,13 +35,6 @@ export default {
         this.$el.querySelector('.dashboard_button-floating-add__default').classList.remove('dashboard_button-floating-add__clicked')
         this.$el.querySelector('.dashboard_input-floating-add-more__hidden').classList.remove('dashboard_input-floating-add-more__open')
       }
-    },
-    newTaskTitle: function (newVal) {
-      if (newVal.length > 0) {
-        this.$el.querySelector('.dashboard_button-add__hidden').classList.add('dashboard_button-add__open')
-      } else {
-        this.$el.querySelector('.dashboard_button-add__hidden').classList.remove('dashboard_button-add__open')
-      }
     }
   },
   methods: {
@@ -50,6 +43,13 @@ export default {
       this.newTaskTitle = ''
       this.$refs.taskList.loadTasks();
       this.addIconClicked = false;
+    },
+    setSubmitButtonState () {
+      if (this.newTaskTitle.length > 0) {
+        this.$el.querySelector('.dashboard_button-add__hidden').classList.add('dashboard_button-add__open')
+      } else {
+        this.$el.querySelector('.dashboard_button-add__hidden').classList.remove('dashboard_button-add__open')
+      }
     }
   }
 }

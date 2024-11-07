@@ -15,10 +15,12 @@
       <input
              class="form-control input_search " type="search"
              placeholder="Search" aria-label="Search"
+             @input="setSearchSubmitButtonState"
              v-model="searchText"/>
       <img class="icon-search-button" @click="findTaskByTitle(searchText)"
            src="https://img.icons8.com/?size=100&id=112468&format=png"
-           :class="{ 'blur disabled opacity-20': searchText.length < 1}"/>
+           :class="{ 'blur disabled opacity-20': searchSubmitDisabled}"
+           />
       <img class="icon-arrow-up" @click="toggleSearchMode" src="https://img.icons8.com/?size=100&id=7801&format=png">
     </div>
 
@@ -72,7 +74,8 @@ export default {
       searchText: '',
       editMode: false,
       sortable: null,
-      searchMode: false
+      searchMode: false,
+      searchSubmitDisabled: true
     }
   },
   props: {
@@ -132,6 +135,13 @@ export default {
       this.searchMode = !this.searchMode;
       this.searchText = ''
       this.loadTasks();
+    },
+    setSearchSubmitButtonState () {
+      if (this.searchText.length > 0) {
+        this.searchSubmitDisabled = false;
+      } else {
+        this.searchSubmitDisabled = true;
+      }
     }
   }
 }
