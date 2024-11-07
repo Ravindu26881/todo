@@ -36,7 +36,7 @@
   </div>
 
   <div v-if="taskList.length < 1 && searchText.length > 1" style="color: white; padding: 100px">No results</div>
-  <div class="dashboard__item-list"  :class="{'blur disabled opacity-20': blur }">
+  <div class="dashboard__item-list" style="transition: 0.5s;" :class="{'blur disabled opacity-20': blur }">
     <ul class="list-group" ref="sortableList">
       <li  v-for="task in taskList" :key="task.id" class="dashboard__item-list__item dashboard__item-list__task" :class="{'dashboard__item-list__item__edit ': editMode, 'dashboard__item-list__item-completed' : task.completed }">
         <div class="task_checkbox">
