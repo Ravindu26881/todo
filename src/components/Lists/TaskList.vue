@@ -3,45 +3,39 @@
     <div class="container-fluid">
       <a class="navbar-brand">Chores</a>
       <form class="d-flex" role="search">
-        <input class="form-control" style="    height: 40px;
-    border-radius: 32px;
-    padding: 12px;
-    text-align: center;
-    background: rgb(41 40 40);
-    border: 1px solid #a5a5a5;
-color: white;" type="search" placeholder="Search" aria-label="Search" v-model="searchText">
+        <input class="form-control" style="height: 40px; border-radius: 32px; padding: 12px; text-align: center; background: rgb(41 40 40); border: 1px solid #a5a5a5; color: white;" type="search" placeholder="Search" aria-label="Search" v-model="searchText">
       </form>
     </div>
   </nav>
 
-    <div class="dashboard__item-list">
-      <ul class="list-group">
-        <div class="dashboard__item-list__task" v-for="task in taskList" :key="task.id">
-          <div class="dashboard__item-list__item" >
-            <div class="task_checkbox">
-              <input
-                  type="checkbox"
-                  class="btn-check"
-                  :id="task.id"
-                  v-model="task.completed"
-                  @click="triggerCheck(task.id)"
-              />
-              <label class="icon-completed-disabled"  :class="{ 'icon-completed-enabled': task.completed }" :for="task.id"></label>
-              <div class="dashboard__item-list__item__title" style="padding: 0px 14px 0px 0px;">
-                {{ task.title }}
-              </div>
-            </div>
-
-            <div class="dashboard__item-list__item-actions">
-              <img class="icon-delete" src="https://img.icons8.com/?size=192&id=83149&format=png&color=FA5252" @click="deleteTask(task.id)">
-            </div>
+  <div class="dashboard__item-list">
+    <ul class="list-group" ref="sortableList">
+      <li  v-for="task in taskList" :key="task.id" class="dashboard__item-list__item dashboard__item-list__task">
+        <div class="task_checkbox">
+          <input
+              type="checkbox"
+              class="btn-check"
+              :id="task.id"
+              v-model="task.completed"
+              @click="triggerCheck(task.id)"
+          />
+          <label class="icon-completed-disabled" :class="{ 'icon-completed-enabled': task.completed }" :for="task.id"></label>
+          <div class="dashboard__item-list__item__title" style="padding: 0px 14px 0px 0px;">
+            {{ task.title }}
           </div>
         </div>
-      </ul>
-    </div>
+
+        <div class="dashboard__item-list__item-actions">
+          <img class="icon-delete" src="https://img.icons8.com/?size=192&id=83149&format=png&color=FA5252" @click="deleteTask(task.id)">
+        </div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
+import Sortable from 'sortablejs';
+
 export default {
   name: 'TaskList',
   data() {
@@ -51,7 +45,8 @@ export default {
     }
   },
   mounted() {
-   this.loadTasks()
+    this.loadTasks();
+    this.initSortable();
   },
   watch: {
     searchText: function(newVal) {
@@ -60,27 +55,36 @@ export default {
   },
   methods: {
     loadTasks() {
-      this.$store.dispatch('loadTasks').then(
-      this.taskList = this.$store.state.tasks
-      )
+      this.$store.dispatch('loadTasks').then(() => {
+        this.taskList = this.$store.state.tasks;
+      });
     },
     deleteTask(id) {
-      this.$store.commit('deleteTask', id)
-      this.loadTasks()
+      this.$store.commit('deleteTask', id);
+      this.loadTasks();
     },
     triggerCheck(id) {
-      this.$store.commit('toggleTask', id)
-      this.loadTasks()
+      this.$store.commit('toggleTask', id);
+      this.loadTasks();
     },
     findTaskByTitle(title) {
       const task = this.$store.getters.getTaskByTitle(title);
-      this.taskList =task;
+      this.taskList = task;
+    },
+    initSortable() {
+      new Sortable(this.$refs.sortableList, {
+        onEnd: (evt) => {
+          const movedTask = this.taskList[evt.oldIndex];
+          this.taskList.splice(evt.oldIndex, 1);
+          this.taskList.splice(evt.newIndex, 0, movedTask);
+          this.$store.commit('updateTaskOrder', this.taskList);
+        },
+      });
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;

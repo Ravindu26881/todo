@@ -20,7 +20,8 @@ export default createStore({
   },
   getters: {
     getTaskByTitle: (state) => (searchString) => {
-      return state.tasks.filter(task => task.title.includes(searchString));
+      const lowercasedSearchString = searchString.toLowerCase();
+      return state.tasks.filter(task => task.title.toLowerCase().includes(lowercasedSearchString));
     }
   },
   mutations: {
@@ -46,6 +47,10 @@ export default createStore({
         task.completed = !task.completed;
         this.commit('saveTasksToLocalStorage');
       }
+    },
+    updateTaskOrder (state, sortedTasks) {
+      state.tasks = sortedTasks;
+      this.commit('saveTasksToLocalStorage');
     },
     saveTasksToLocalStorage(state) {
       localStorage.setItem('tasks', JSON.stringify(state.tasks));
