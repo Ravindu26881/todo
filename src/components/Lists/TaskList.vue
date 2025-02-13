@@ -192,6 +192,9 @@ a {
   padding: 20px 8px;
   background-color: rgb(57 57 57) !important;
   z-index:0;
+  box-shadow: 0px 6px 20px 0px #00000066;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
 }
 .navbar-brand {
   position: relative;
@@ -209,10 +212,11 @@ a {
   padding: 20px 20px;
   background: #3b3b3b;
   color: white;
-  border-radius: 40px;
+  border-radius: 26px;
   margin: 10px 20px;
   text-align: left;
   transition: 0.5s;
+  box-shadow: 0px 6px 20px 0px #00000066;
 }
 
 .dashboard__item-list__item-completed {
@@ -247,7 +251,7 @@ a {
   padding: 12px;
   text-align: center;
   background: rgb(41 40 40);
-  border: 1px solid #a5a5a5;
+  border: 1px solid #7b7b7b;
   color: white;
 
 }
