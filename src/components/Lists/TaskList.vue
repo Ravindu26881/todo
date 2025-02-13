@@ -1,7 +1,12 @@
 <template>
+  <menu-bar @hide-menu="toggleMenu" :visible="isMenuVisible"/>
+
   <nav class="navbar bg-body-tertiary" >
     <div class="container-fluid">
-      <a class="navbar-brand" :class="{'navbar-brand_hidden ': searchMode }">Chores</a>
+      <div style="display: flex;align-items: center;gap: 10px;position: relative;transition: 0.5s;left: 0;" @click="toggleMenu" :class="{'navbar-brand_hidden ': searchMode || editMode }">
+        <img src="https://img.icons8.com/?size=100&id=w3-HRY0z8wQY&format=png" style=" height: 30px;filter: invert(1);">
+        <a class="navbar-brand" >Chores</a>
+      </div>
     </div>
   </nav>
 
@@ -65,6 +70,7 @@
 
 <script>
 import Sortable from 'sortablejs';
+import MenuBar from '@/components/Bars/MenuBar.vue';
 
 export default {
   name: 'TaskList',
@@ -75,8 +81,12 @@ export default {
       editMode: false,
       sortable: null,
       searchMode: false,
-      searchSubmitDisabled: true
+      searchSubmitDisabled: true,
+      isMenuVisible: false
     }
+  },
+  components: {
+    MenuBar
   },
   props: {
     blur: {
@@ -97,6 +107,9 @@ export default {
     }
   },
   methods: {
+    toggleMenu() {
+      this.isMenuVisible = !this.isMenuVisible
+    },
     loadTasks() {
       this.$store.dispatch('loadTasks').then(() => {
         this.taskList = this.$store.state.tasks;
@@ -186,14 +199,14 @@ a {
   left: 0;
 }
 .navbar-brand_hidden {
-  left: -110px;
+  left: -158px !important;
   transition: 0.5s;
 }
 .dashboard__item-list__item {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 20px 20px;
   background: #3b3b3b;
   color: white;
   border-radius: 40px;

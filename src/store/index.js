@@ -22,15 +22,45 @@ export default createStore({
         title: "Move up high priority tasks by clicking the edit icon on top right.",
         completed: false
       }
-    ]
+    ],
+    theme: 'dark'
   },
   getters: {
     getTaskByTitle: (state) => (searchString) => {
       const lowercasedSearchString = searchString.toLowerCase();
       return state.tasks.filter(task => task.title.toLowerCase().includes(lowercasedSearchString));
+    },
+    getCurrentTheme: (state) => {
+      return state.theme;
     }
   },
   mutations: {
+    toggleTheme(state) {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+
+      // Apply theme styles to body
+      if (state.theme === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.body.classList.remove('light-theme');
+      } else {
+        document.body.classList.add('light-theme');
+        document.body.classList.remove('dark-theme');
+      }
+      // Store theme in localStorage
+      localStorage.setItem('theme', state.theme);
+    },
+    setTheme(state) {
+      localStorage.getItem('theme') ? state.theme = localStorage.getItem('theme') : state.theme = 'dark';
+      if (state.theme === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.body.classList.remove('light-theme');
+      } else {
+        document.body.classList.add('light-theme');
+        document.body.classList.remove('dark-theme');
+      }
+      // Store theme in localStorage
+      localStorage.setItem('theme', state.theme);
+    },
     setTasks(state, tasks) {
       state.tasks = tasks;
     },

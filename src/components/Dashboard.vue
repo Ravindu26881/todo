@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard">
+
     <task-list class="aaaaaaaaaa" ref="taskList" :blur="addIconClicked" />
     <div>
     <div class="dashboard_input-floating-add-more__hidden">
@@ -24,6 +25,9 @@ export default {
       addIconClicked: false,
       newTaskTitle: ''
     }
+  },
+  mounted() {
+    this.$store.commit('setTheme')
   },
   watch: {
     addIconClicked: function (newVal) {
@@ -74,7 +78,7 @@ a {
 
 .dashboard_button-floating-add__default {
   position: absolute;
-  bottom: 24px;
+  bottom: 40px;
   right: 20px;
   width: 50px;
   cursor: pointer;
@@ -84,7 +88,7 @@ a {
 
 .dashboard_button-floating-add__clicked {
   transition: 0.5s;
-  bottom: 24px;
+  bottom: 40px;
   transform: rotate(45deg);
 }
 
@@ -122,7 +126,7 @@ a {
 
 .dashboard_input-floating-add-more__open {
   transition: 0.5s;
-  bottom: 24px;
+  bottom: 40px;
 }
 
 .dashboard_button-add__hidden {
@@ -137,6 +141,10 @@ a {
   opacity: 1;
   width: 50px;
   transition: 0.2s;
+}
+
+@media (min-width: 768px) {
+
 }
 
 </style>
